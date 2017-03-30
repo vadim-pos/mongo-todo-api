@@ -65,3 +65,29 @@ describe('GET /todos', () => {
             .end(done);
     });
 });
+
+describe('GET /todos/:id', () => {
+    it('should return todo doc for existing id', done => {
+        request(app)
+            .get(`/todos/${testTodos[0]._id.toHexString()}`)
+            .expect(200)
+            .expect(res => {
+                expect(res.body.todo.text).toBe(testTodos[0].text);
+            })
+            .end(done);
+    });
+    it('should return 404 if no todo found', done => {
+        const id = new ObjectID();
+        request(app)
+            .get(`/todos/${id.toHexString()}`)
+            .expect(404)
+            .end(done);
+    });
+    it('should return 404 if invalid object id passed', done => {
+        const id = '123qwerty';
+        request(app)
+            .get(`/todos/${id}`)
+            .expect(404)
+            .end(done);
+    });
+});
