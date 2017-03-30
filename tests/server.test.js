@@ -18,7 +18,7 @@ beforeEach(done => {
 });
 
 describe('POST /todos', () => {
-    it('should create new todo', done => {
+    it('should create new todo and return it', done => {
         const text = 'test todo text';
 
         request(app)
@@ -67,7 +67,7 @@ describe('GET /todos', () => {
 });
 
 describe('GET /todos/:id', () => {
-    it('should return todo doc for existing id', done => {
+    it('should return todo doc with existing id', done => {
         request(app)
             .get(`/todos/${testTodos[0]._id.toHexString()}`)
             .expect(200)
@@ -87,6 +87,41 @@ describe('GET /todos/:id', () => {
         const id = '123qwerty';
         request(app)
             .get(`/todos/${id}`)
+            .expect(404)
+            .end(done);
+    });
+});
+
+describe('DELETE /todos/:id', () => {
+    it('should remove todo with existing id and return it', done => {
+        const id = testTodos[0]._id.toHexString();
+
+        request(app)
+            .delete(`/todos/${testTodos[0]._id.toHexString()}`)
+            .expect(200)
+            .expect(res => {
+                expect(res.body.todo._id).toBe(id);
+            })
+            .end((err, res) => {
+                if (err) { return done(err); }
+
+                Todo.findById(id).then(todo => {
+                    expect(todo).toNotExist();
+                    done();
+                }, err => done(err));
+            });
+    });
+    it('should return 404 if no todo found', done => {
+        const id = new ObjectID();
+        request(app)
+            .delete(`/todos/${id.toHexString()}`)
+            .expect(404)
+            .end(done);
+    });
+    it('should return 404 when invalid object id passed', done => {
+        const id = '123qwerty';
+        request(app)
+            .delete(`/todos/${id}`)
             .expect(404)
             .end(done);
     });
