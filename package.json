@@ -1,0 +1,25 @@
+{
+  "name": "05.mongo-todo-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "cross-env NODE_ENV=test && mocha tests/*.test.js",
+    "test-watch": "nodemon --exec \"npm test\""
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongodb": "^2.2.25",
+    "mongoose": "^4.9.2"
+  },
+  "devDependencies": {
+    "cross-env": "^3.2.4",
+    "expect": "^1.20.2",
+    "mocha": "^3.2.0",
+    "supertest": "^3.0.0"
+  }
+}
