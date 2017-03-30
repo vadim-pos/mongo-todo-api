@@ -9,6 +9,8 @@ const { Todo } = require('./models/todo');
 
 const app = express();
 
+/* --- middleware settings --- */
+
 app.use((req, res, next) => {
     const now = new Date().toString();
     const logInfo = `${now}: ${req.method} ${req.url}`;
@@ -20,6 +22,23 @@ app.use((req, res, next) => {
     console.log(logInfo);
     next();
 });
+
+app.use(bodyParser.json());
+
+/* --- routes settings --- */
+
+app.post('/todos', (req, res) => {
+    const todo = new Todo({
+        text: req.body.text
+    });
+
+    todo.save().then(doc => {
+        res.send(doc);
+    }, err => {
+        res.status(400).send(err);
+    });
+});
+
 
 app.listen(3000, () => console.log(`Running on port ${process.env.PORT}`));
 
