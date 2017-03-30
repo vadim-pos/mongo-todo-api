@@ -10,12 +10,12 @@
 + url: /todos
 + json-body: { text: 'Text for new todo' }
 ### Read - returns all todos or specific todo
-+ Get all todos
-    + method: GET
-    + url: /todos
-+ Get todo by id
-    + method: GET
-    + url: /todos/:id
+#### Get all todos
++ method: GET
++ url: /todos
+#### Get todo by id
++ method: GET
++ url: /todos/:id
 ### Update - updates specific todo and returns it
 + method: PATCH
 + url: /todos/:id
